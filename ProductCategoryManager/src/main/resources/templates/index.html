@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Home page</title>
+	</head>
+	<body>
+			<div align="center">
+				<h1>Products</h1>
+				<a href="/newProduct"> Add product </a>
+				<a href="/showCategories"> View all categories </a>
+				<table border="2" cellpadding="8">
+					<thead>	
+						<tr>
+							<th>Product ID</th>
+							<th>Name</th>
+							<th>Description</th>
+							<th>Price</th>
+							<th>Categories</th>
+							<th>Actions</th>
+						</tr>
+					<thead>
+					<tbody>
+						<tr th:each="product : ${productsList}">
+							<td th:text="${product.id}"> Product ID </td>
+							<td th:text="${product.name}"> Name </td>
+							<td th:text="${product.description}"> Description </td>
+							<td th:text="${product.price} + ' ' + ${product.currency}"> Price  </td>
+							<td th:unless="${#lists.isEmpty(product.GetCategories())}" th:each="category : ${product.GetCategories()}">
+								<div th:text="${category.name}">  </div>
+							</td> 
+							<td th:if="${#lists.isEmpty(product.GetCategories())}">No categories added</td> 
+							<td>
+								<a th:href="@{'/editProduct/' + ${product.id}}" margin=1px> Edit </a>
+								<a th:href="@{'/deleteProduct/'} + ${product.id}" margin=1px> Delete </a>
+								<a th:href="@{'/addCategoryToProduct/' + ${product.id}}" margin=1px> Add category </a>
+								<a th:href="@{'/deleteCategoryFromProduct/'} + ${product.id}" margin=1px> Delete category </a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	</body>
+</html>
