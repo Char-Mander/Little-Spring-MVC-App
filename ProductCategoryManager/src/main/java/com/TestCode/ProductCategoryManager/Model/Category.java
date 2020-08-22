@@ -42,7 +42,7 @@ public class Category {
 		return products;
 	}
 	
-	public Product GetProductFromList(int id) {
+	public Product GetProductFromList(long id) {
 		Product product = null;
 		for(Product p : products) {
 			if(p.getId()==id) product = p;
@@ -54,7 +54,7 @@ public class Category {
 		products.add(p);
 	}
 	
-	public void DeleteProduct(int id) {
+	public void DeleteProduct(long id) {
 		for(Product p : products) {
 			if(p.getId()==id) products.remove(p);
 			return;

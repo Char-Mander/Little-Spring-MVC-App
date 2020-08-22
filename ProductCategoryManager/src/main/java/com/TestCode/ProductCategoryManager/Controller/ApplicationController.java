@@ -25,6 +25,9 @@ public class ApplicationController {
 	@RequestMapping("/")
 	public String viewHomePage(Model model) {
 		List<Product> productsList = p_service.showAll();
+		for(Product p : productsList) {
+			System.out.println("Producto: " + p.getId() + " con " + p.GetCategories().size() + " elementos en categorías");
+		}
 		model.addAttribute("productsList", productsList);
 		return "index";
 	}
@@ -48,27 +51,44 @@ public class ApplicationController {
 		return "add_category_to_product";
 	}
 	
-	@RequestMapping("/categoryToAdd/{id}")
-	public String categoryToAdd(@PathVariable(name = "id") long id, @ModelAttribute("category") Category category) {
-		System.out.println("Categoría con id: " + category.getId() + " , y producto con id: " + id);
-		Product p = p_service.get(id);
-		p.AddCategories(category);
+	@RequestMapping("/categoryToAdd/{id_product}/{category_id}")
+	public String categoryToAdd(@PathVariable(name = "id_product") long id_product, @PathVariable(name = "category_id") long id_category) {
+		Product p = p_service.get(id_product);
+		Category c = c_service.get(id_category);
+		p.AddCategories(c);
+		System.out.println("Se ha añadido la categoría " + c.getName() + " a la lista del producto");
+		c.AddProducts(p);
+		System.out.println("Se ha añadido el producto " + p.getName() + " a la lista de categorías");
 		p_service.save(p);
-		System.out.println("Antes");
-		category.AddProducts(p);
-		System.out.println("Después de añadir");
-		c_service.save(category);
+		System.out.println("Después de añadir la categoría con id: " + c.getId() + " y nombre: " + c.getName());
+		c_service.save(c);
 		System.out.println("Tamaño del array de productos: " + p.GetCategories().size());
-		System.out.println("Tamaño del array de categorías: " + category.GetProducts().size());
+		System.out.println("Tamaño del array de categorías: " + c.GetProducts().size());
 		return "redirect:/";
 	}
 	
 	@RequestMapping("/deleteCategoryFromProduct/{id}")
 	public String deleteCategoryFromProduct(@PathVariable(name = "id") long id, Model model) {
-		List<Category> categoriesList = c_service.showAll();
-		if(categoriesList.isEmpty()) return "redirect:/";
-		model.addAttribute("categoriesList", categoriesList);
+		Product product = p_service.get(id);
+		if(product.GetCategories().isEmpty()) return "redirect:/";
+		model.addAttribute("categoriesList", product.GetCategories());
 		model.addAttribute("product_id", id);
 		return "delete_category_from_product";
+	}	
+
+	@RequestMapping("/deleteCategoryFromProduct/{id_product}/{id_category}")
+	public String categoryToDelete(@PathVariable(name = "id_product") long id_product, @PathVariable(name = "id_category") long id_category) {
+		Product p = p_service.get(id_product);
+		Category c = c_service.get(id_category);
+		p.DeleteCategory(id_category);
+		System.out.println("Se ha eliminado la categoría " + c.getName() + " de la lista del producto");
+		c.DeleteProduct(id_product);
+		System.out.println("Se ha eliminado el producto " + p.getName() + " de la lista de categorías");
+		p_service.save(p);
+		System.out.println("Después de eliminar la categoría con id: " + c.getId() + " y nombre: " + c.getName());
+		c_service.save(c);
+		System.out.println("Tamaño del array de productos: " + p.GetCategories().size());
+		System.out.println("Tamaño del array de categorías: " + c.GetProducts().size());
+		return "redirect:/";
 	}
 }

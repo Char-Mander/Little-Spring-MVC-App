@@ -29,7 +29,7 @@ public class ProductController {
 		if(product.getPrice()<=0) return "redirect:/error";
 		if(product.getCurrency().isBlank()) product.setCurrency("EUR");
 		p_service.save(product);
-		return "redirect:/";
+		return "index";
 	}
 	
 	@RequestMapping("/editProduct/{id}")

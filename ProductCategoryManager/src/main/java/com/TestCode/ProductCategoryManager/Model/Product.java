@@ -81,7 +81,7 @@ public class Product {
 		return categories.contains(c);
 	}
 	
-	public Category GetCategoryFromList(int id) {
+	public Category GetCategoryFromList(long id) {
 		Category category = null;
 		for(Category c : categories) {
 			if(c.getId()==id) category = c;
@@ -93,7 +93,7 @@ public class Product {
 		categories.add(c);
 	}
 	
-	public void DeleteCategory(int id) {
+	public void DeleteCategory(long id) {
 		for(Category c : categories) {
 			if(c.getId()==id) categories.remove(c);
 			return;

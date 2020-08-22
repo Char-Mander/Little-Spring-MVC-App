@@ -9,11 +9,13 @@ xmlns:th="http://www.thymeleaf.org">
 		<div align="center">
 			<h1> Select the category to add</h1>
 			<div th:each="category : ${categoriesList}">
-				<form action="#" th:action="@{'/categoryToAdd/'} + ${product_id}" th:object="${category}" method="post">
-					<button type="submit" th:text="${category.name}"></button> 				
-					<!-- <input type="hidden" th:field="*{id}" readonly="readonly"/>
-					<input type="hidden" th:field="*{name}" readonly="readonly"/>  -->	
+				<form action="#" th:action="@{'/categoryToAdd/'} + ${product_id} + '/' + ${category.id}" th:object="${category}" method="post">
+					<button type="submit" th:text="${category.name}"></button>
+				</form>
 			</div>
+			<form action="#" th:action="@{/}" method="get">
+				<button type="submit">Back to Home page</button>
+			</form>
 		</div>
 	</body>
 </html>
