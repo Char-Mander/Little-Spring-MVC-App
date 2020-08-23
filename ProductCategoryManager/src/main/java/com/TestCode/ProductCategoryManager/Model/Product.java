@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 
@@ -22,12 +23,8 @@ public class Product {
 	private String description;
 	private float price;
 	private String currency;	
-	@ManyToMany
-	@JoinTable(
-			  name = "productcategory", 
-			  joinColumns = @JoinColumn(name = "id_product"), 
-			  inverseJoinColumns = @JoinColumn(name = "id_category"))
-    List<Category> categories = new ArrayList<Category>();
+	@OneToMany(mappedBy = "productcategoryId.id_product")
+    List<ProductCategory> categories = new ArrayList<ProductCategory>();
 	
 	public Product() { }
 
@@ -73,30 +70,27 @@ public class Product {
 		this.currency = currency;
 	}
 
-	public List<Category> GetCategories(){
+	public List<ProductCategory> GetCategories(){
 		return categories;
 	}
 	
-	public boolean HasTheCategory(Category c) {
+	public boolean HasTheCategory(ProductCategory c) {
 		return categories.contains(c);
 	}
-	
+	/*
 	public Category GetCategoryFromList(long id) {
-		Category category = null;
-		for(Category c : categories) {
-			if(c.getId()==id) category = c;
+		ProductCategory category = null;
+		for(ProductCategory c : categories) {
+			if(c.getcatgetId()==id) category = c;
 		}
 		return category;
-	}
+	}*/
 	
-	public void AddCategories(Category c) {
+	public void AddCategories(ProductCategory c) {
 		categories.add(c);
 	}
 	
-	public void DeleteCategory(long id) {
-		for(Category c : categories) {
-			if(c.getId()==id) categories.remove(c);
-			return;
-		}
+	public void DeleteCategory(ProductCategory id) {
+		if(categories.contains(id)) categories.remove(id);
 	}
 }

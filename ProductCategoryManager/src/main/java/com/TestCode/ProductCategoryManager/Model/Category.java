@@ -19,7 +19,7 @@ public class Category {
 	private String name;
 	
 	@ManyToMany(mappedBy = "categories")
-    List<Product> products = new ArrayList<Product>();
+    List<ProductCategory> products = new ArrayList<ProductCategory>();
 	
 	public Category() { }
 	
@@ -38,27 +38,24 @@ public class Category {
 		this.name = name;
 	}
 	
-	public List<Product> GetProducts(){
+	public List<ProductCategory> GetProducts(){
 		return products;
 	}
-	
-	public Product GetProductFromList(long id) {
-		Product product = null;
-		for(Product p : products) {
+	/*
+	public ProductCategory GetProductFromList(long id) {
+		ProductCategory product = null;
+		for(ProductCategory p : products) {
 			if(p.getId()==id) product = p;
 		}
 		return product;
 	}
-	
-	public void AddProducts(Product p) {
+	*/
+	public void AddProducts(ProductCategory p) {
 		products.add(p);
 	}
 	
-	public void DeleteProduct(long id) {
-		for(Product p : products) {
-			if(p.getId()==id) products.remove(p);
-			return;
-		}
+	public void DeleteProduct(ProductCategory id) {
+		if(products.contains(id)) products.remove(id);
 	}
 	
 }
